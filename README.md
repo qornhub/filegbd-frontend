@@ -1,226 +1,215 @@
-📘 FileGBD — Notes Management App
+# 📘 FileGBD — File Management System
 
-A full-stack note-taking system built with Vue.js, Node.js (Express), and MySQL, featuring authentication, CRUD notes, and responsive UI.
+FileGBD is a full-stack note-taking application built with **Vue.js (frontend)**, **Node.js + Express (backend)**, and **MySQL (database)**.
 
-🚀 Features
-Frontend (Vue.js)
+It provides:
 
-User registration & login
+- User registration & login (JWT-based)
+- A clean, minimal black-and-white interface
+- Note creation, editing, deletion
+- Search and responsive layout
+- A sidebar optimized for productivity
 
-Fully responsive UI
+---
 
-Create, edit, delete notes
+## 🚀 Features
 
-Search notes
+### 🔹 Frontend (Vue.js + Vite)
+- Responsive layout (desktop & mobile)
+- Register / Login pages with modern UI
+- Notes sidebar with:
+  - List of notes (title + created date)
+  - Only the notes list area scrolls
+  - 3-dot menu for Edit / Delete
+  - User avatar using first 2 letters of username
+- Notes panel with:
+  - Rich display of title and content
+  - Word count & reading time
+  - “Empty state” welcome screen
 
-Clean, modern sidebar + editor design
+### 🔹 Backend (Node.js + Express)
+- RESTful API under `/api`
+- Authentication routes:
+  - `POST /api/register`
+  - `POST /api/login`
+- Notes routes (protected with JWT middleware):
+  - `GET /api/notes`
+  - `POST /api/notes`
+  - `PUT /api/notes/:id`
+  - `DELETE /api/notes/:id`
+- Password hashing with **bcryptjs**
+- JWT token generation with **jsonwebtoken**
+- MySQL database via **mysql2**
 
-Persistent login (localStorage token)
+---
 
-Backend (Node.js + Express)
+## 🛠️ Tech Stack
 
-REST API
+| Layer     | Technology             |
+|----------|------------------------|
+| Frontend | Vue 3, Vite, Tailwind-style utility classes |
+| Backend  | Node.js, Express       |
+| Database | MySQL (Railway / local)|
+| Deploy   | Vercel (frontend), Railway (backend + DB) |
 
-JWT Authentication
+---
 
-MySQL Database (Users + Notes)
+## 📁 Project Structure
 
-Secure password hashing (bcrypt)
-
-CORS enabled for deployment
-
-Database (MySQL)
-
-users table
-
-notes table
-
-Foreign key relationship
-
-🛠️ Tech Stack
-Layer	Technology
-Frontend	Vue.js + Vite
-Backend	Node.js (Express)
-Database	MySQL
-Deployment	Vercel (Frontend), Railway (Backend + DB)
-📁 Project Structure
+```bash
 project-root/
 │
 ├── backend/
 │   ├── controllers/
+│   │   ├── authController.js
+│   │   └── noteController.js
 │   ├── routes/
+│   │   ├── authRoutes.js
+│   │   └── noteRoutes.js
 │   ├── middleware/
-│   ├── config/db.js
+│   │   └── auth.js
+│   ├── config/
+│   │   └── db.js
 │   ├── server.js
 │   └── package.json
 │
 ├── frontend/
 │   ├── src/
-│   ├── public/
-│   ├── index.html
+│   │   ├── pages/
+│   │   │   ├── Login.vue
+│   │   │   ├── Register.vue
+│   │   │   └── Notes.vue
+│   │   ├── components/
+│   │   │   └── notes/
+│   │   │       ├── NotesSidebar.vue
+│   │   │       └── NotesPanel.vue
+│   │   ├── api.js
+│   │   └── router/index.js
 │   ├── package.json
 │   └── vite.config.js
 │
 └── README.md
+```
 
-📦 Installation & Setup (Local Development)
+---
 
-This guide shows how to run the entire app locally.
+## 🧰 Local Setup — How to Run
 
-🗄️ 1. Clone the Repository
+### 1️⃣ Clone the Project
+```bash
 git clone https://github.com/<your-username>/<your-repo>.git
 cd project-root
+```
 
-🛠️ 2. Backend Setup
+### 2️⃣ Database Setup
+```sql
+CREATE DATABASE notes_db;
+SOURCE /path/to/notes.sql;
+```
 
-Go into the backend folder:
-
+### 3️⃣ Backend Setup
+```bash
 cd backend
-
-Install dependencies:
 npm install
+```
 
-Create a .env file:
+Create `.env`:
+```
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=notes_db
 DB_PORT=3306
-JWT_SECRET=SECRET_KEY_123
+
 PORT=3000
+CORS_ORIGIN=*
+JWT_SECRET=SECRET_KEY_123
+```
 
 Start backend:
+```bash
 npm run dev
+```
 
-
-The backend will run on:
-
-http://localhost:3000
-
-🧰 3. Database Setup
-
-Create database:
-
-CREATE DATABASE notes_db;
-
-
-Import the SQL file:
-
-source notes_fixed.sql;
-
-
-Tables created:
-
-users
-
-notes
-
-🌐 4. Frontend Setup
-
-Go into the frontend folder:
-
-cd ../frontend
-
-
-Install dependencies:
-
+### 4️⃣ Frontend Setup
+```bash
+cd frontend
 npm install
+```
 
-
-Create .env:
-
+Create `.env`:
+```
 VITE_API_BASE_URL=http://localhost:3000/api
+```
 
-
-Run development server:
-
+Start frontend:
+```bash
 npm run dev
+```
+
+---
+
+## 🌍 Deployment
+
+### 🚀 Backend on Railway
+- Link backend repo
+- Add MySQL service
+- Set Railway MySQL credentials as env vars
+- Import SQL
+- Deploy
+
+Example API:
+```
+https://filegbd-backend-production.up.railway.app/api
+```
+
+---
+
+### 🚀 Frontend on Vercel
+Add env var:
+```
+VITE_API_BASE_URL=https://filegbd-backend-production.up.railway.app/api
+```
+
+Deploy.
+
+Example:
+```
+https://filegbd-frontend.vercel.app
+```
+
+---
+
+## 🔐 API Summary
+
+### Auth Routes
+POST /api/register  
+POST /api/login  
+
+### Notes Routes (Require JWT)
+GET /api/notes  
+POST /api/notes  
+PUT /api/notes/:id  
+DELETE /api/notes/:id  
+
+---
+
+## 🧩 Development Process (AI Usage)
+
+### 🎨 Example 1 — Sidebar Layout
+Prompt: refine sidebar, remove icons, scroll only list.  
+AI output: sidebar structure.  
+My changes: removed extra UI, fixed padding, ensured only list scrolls.
 
 
-The frontend will run on:
+### 🌐 Example 3 — API Base URL
+Prompt: replace hardcoded URLs.  
+AI output: axios instance + .env  
+My changes: fixed Railway DB errors, updated deployment configs.
 
-http://localhost:5173
+---
 
-🌍 Deployment Guide
-🚀 Frontend (Vue) — Vercel
-
-Push frontend to GitHub
-
-Go to Vercel → New Project
-
-Select your repo
-
-Add Environment Variable:
-
-VITE_API_BASE_URL=https://<your-railway-backend>.railway.app/api
-
-
-Deploy
-
-🚀 Backend (Node.js) — Railway
-
-Create new Railway project
-
-Deploy your backend GitHub repo
-
-Add environment variables:
-
-DB_HOST=...
-DB_USER=...
-DB_PASSWORD=...
-DB_NAME=...
-DB_PORT=...
-JWT_SECRET=SECRET_KEY_123
-PORT=3000
-
-
-Connect MySQL plugin
-
-Import your SQL
-
-Deploy backend
-
-Your backend URL becomes:
-
-https://filegbd-backend-production.up.railway.app
-
-🔐 Authentication Flow
-
-User registers
-
-Password is hashed using bcrypt
-
-Login returns JWT token
-
-Frontend stores token in localStorage
-
-All note requests require Authorization header:
-
-Authorization: Bearer <token>
-
-📝 API Endpoints
-Auth
-Method	Endpoint	Description
-POST	/api/register	Register user
-POST	/api/login	Login user
-Notes
-Method	Endpoint	Description
-GET	/api/notes	Fetch notes
-POST	/api/notes	Create note
-PUT	/api/notes/:id	Update note
-DELETE	/api/notes/:id	Delete note
-🧪 Testing
-
-Test backend with Postman or Thunder Client:
-
-Example login payload:
-
-{
-  "email": "demo@example.com",
-  "password": "password"
-}
-
-😊 Credits
-
-Developed by Nelson Yong Chee Fei
-UMS — Bachelor of Computer Science (Software Engineering)
+## 👨‍💻 Author
+Nelson Yong Chee Fei  
+Bachelor of Computer Science (Software Engineering)  
+Universiti Malaysia Sabah (UMS)
